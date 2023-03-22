@@ -1,15 +1,15 @@
 /*jshint sub:true*/
 /*jshint forin:false*/
 /* BQuest
- * 
+ *
  * This file is part of BQuest
- * 
+ *
  * BQuest is licenced under public domain and or CC-0
  * See http://creativecommons.org/publicdomain/zero/1.0/
- * 
+ *
  * BQuest uses jQuery, licenced by the jQuery Fundation
  * under the MIT Licence (see https://jquery.org/license/)
- * 
+ *
  * Please notice that only the game engine is in public domain.
  * Game data (pictures, stories, texts and more) are subject to their
  * own licence which may differ.
@@ -371,14 +371,14 @@ var stats = {
 		'bar_negative':'negative.png',
 		'bar_extreme':'autofail.png',
 	},
-	
+
 };
 
 var escape_table = {
-	'easy': {'fail':3,'auto':6,'free':20}, 
-	'medium': {'fail':6,'-1':14,'free':20}, 
+	'easy': {'fail':3,'auto':6,'free':20},
+	'medium': {'fail':6,'-1':14,'free':20},
 	'hard': {'fail':9,'-1':13,'-2':17,'-3':20},
-	'extreme': {'fail':13,'-1':16,'-2':18,'-3':20}, 
+	'extreme': {'fail':13,'-1':16,'-2':18,'-3':20},
 	'impossible': {'fail':16,'-1':18,'-2':20},
 };
 
@@ -487,11 +487,11 @@ function diceRoll(dice, reason, _critical) {
 		totalroll += temproll;
 	}
 	if ('d6' in dice) {
-		if (first) 
+		if (first)
 			first = false;
-		else 
+		else
 			dicestring += " + ";
-		
+
 		dicestring += "<span style=\"color: #22B14C\">" + dice['d6'] + "d6</span>";
 		temproll = 0;
 		for (i = 0; i < dice['d6']; i++) {
@@ -501,11 +501,11 @@ function diceRoll(dice, reason, _critical) {
 		totalroll += temproll;
 	}
 	if ('d20' in dice) {
-		if (first) 
+		if (first)
 			first = false;
-		else 
+		else
 			dicestring += " + ";
-		
+
 		dicestring += "<span style=\"color: #22B14C\">" + dice['d20'] + "d20</span>";
 		temproll = 0;
 		for (i = 0; i < dice['d20']; i++) {
@@ -517,23 +517,23 @@ function diceRoll(dice, reason, _critical) {
 		totalroll += temproll;
 	}
 	if ('base' in dice && dice['base'] !== 0) {
-		if (first) 
+		if (first)
 			first = false;
-		else {	
+		else {
 			if (dice['base'] > 0)
 				dicestring += " + ";
-			else 
-				dicestring += " - ";				
+			else
+				dicestring += " - ";
 		}
 		dicestring += "<span style=\"color: #22B14C\">" + Math.abs(dice['base']) + "</span>";
 		totalroll += dice['base'];
 	}
 	if (_critical) {
-		if (first) 
+		if (first)
 			first = false;
-		else 
+		else
 			dicestring += " + ";
-		
+
 		dicestring += "<span style=\"font-weight: bold; color: red\">1d6</span>";
 		temproll = Math.ceil(Math.random()*6);
 		dicestring += "<span style=\"font-weight: bold;\"> (<span style=\"color: red\">" + temproll + "</span>)</span>";
@@ -580,7 +580,7 @@ function damageString(damage, targets) {
 		}
 		damagestring += "<span style=\"color: #22B14C\">" + damage['base'] + "</span>";
 	}
-	if (!first) 
+	if (!first)
 		damagestring += ")";
 	if (targets > 1)
 		damagestring += " x" + targets;
@@ -607,7 +607,7 @@ function damageString(damage, targets) {
 	if (damage['ribbon'] > 0)
 		damagestring += " (<span style=\"color: #FFADC9\">Rbn+" + damage['ribbon'] + "</span>)";
 	damagestring += "</span>";
-	
+
 	return damagestring;
 }
 
@@ -634,20 +634,20 @@ function statString(player, item, type) {
 			tier = 'hard';
 		else if (players[player]['bindings'][item]['level'] <= 7)
 			tier = 'extreme';
-		else 
+		else
 			tier = 'impossible';
 		effects = bindings[item][tier];
 	}
 	if (type == 'enebuff')
 		effects = enemies[player]['buffs'][item];
-	
+
 	for (_stat in stats) {
 		if (_stat in effects) {
 			if (effects[_stat] > 0) {
 				if (stats[_stat]['nomod'] === true)
 					statstring += "<span style=\"font-weight: bold;\"> (<span style=\"color: #ED1C34\">" + stats[_stat]['name_short'] + "</span>)</span>";
 				else
-					statstring += "<span style=\"font-weight: bold;\"> (<span style=\"color: #22B14C\">" + stats[_stat]['name_short'] + "+" + effects[_stat] + "</span>)</span>";					
+					statstring += "<span style=\"font-weight: bold;\"> (<span style=\"color: #22B14C\">" + stats[_stat]['name_short'] + "+" + effects[_stat] + "</span>)</span>";
 			} else if (effects[_stat] < 0) {
 				statstring += "<span style=\"font-weight: bold;\"> (<span style=\"color: #ED1C34\">" + stats[_stat]['name_short'] + "" + effects[_stat] + "</span>)</span>";
 			}
@@ -662,7 +662,7 @@ function statString(player, item, type) {
 		if (effects['duration'] > 2)
 			statstring += "<span style=\"font-weight: bold;\"> (<span style=\"color: #22B14C\">" + effects['duration'] + " Rds</span>)</span>";
 	}
-	
+
 	return statstring;
 }
 
@@ -690,7 +690,7 @@ function showTextResult(textResult) {
 		}
 		title = translate(i18n, i18n_args);
 	}
-	
+
 	showResult(textResult, title);
 }
 
@@ -733,7 +733,7 @@ function sendEvent(string, bold) {
 		div.append("<span style='font-weight:bold;'>" + string + "</span>");
 		backlog += "<span style='font-weight:bold;'>" + string + "</span>";
 	} else {
-		div.append("<span>" + string + "</span>");	
+		div.append("<span>" + string + "</span>");
 		backlog += "<span>" + string + "</span>";
 	}
 	div.scrollTop(div.prop('scrollHeight'));
@@ -741,6 +741,25 @@ function sendEvent(string, bold) {
 
 // Game functions
 /////////////////
+
+// [RM] custom sorting functions
+function getItemSortIndex(item) {
+	const bindingsArray = Object.entries(bindings);
+	for (var i = 0; i < bindingsArray.length; i++) {
+		if (bindingsArray[i][0] === item) return i;
+	}
+	return -1; // mimic Array.indexOf() behavior when no index is found
+}
+function sortPlayerBindings(player) { // currently called from setItem()
+	const parent = jQuery('#bindings-' + player);
+	const children = parent.children('li');
+	children.sort(function(a, b) {
+		const x = getItemSortIndex(a['id'].split('item-').join(''));
+		const y = getItemSortIndex(b['id'].split('item-').join(''));
+		return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+	});
+	parent.append(children);
+}
 
 /** Set an item in given inventory location and update display */
 function setItem(player, item, level) {
@@ -767,9 +786,9 @@ function setItem(player, item, level) {
 		tier = 'hard';
 	else if (players[player]['bindings'][item]['level'] <= 7)
 		tier = 'extreme';
-	else 
+	else
 		tier = 'impossible';
-	
+
 	// Display
 	_span = jQuery("#bindings-" + player + " li#item-" + escAttr(item) + " .item");
 	_span.html("<span class='glowing'>" + escHtml(bindings[item][tier]['desc']) + "</span>");
@@ -778,13 +797,14 @@ function setItem(player, item, level) {
 	setTimeout(function(){
 		var tempspan = jQuery("#bindings-" + player + " li#item-" + escAttr(item) + " .item .glowing");
 		tempspan.removeClass('glowing');
-		tempspan.addClass('notglowing');				
+		tempspan.addClass('notglowing');
 		setTimeout(function(){
 			var tempspan = jQuery("#bindings-" + player + " li#item-" + escAttr(item) + " .item .notglowing");
 			tempspan.removeAttr('style');
 			tempspan.removeClass('notglowing');
 		},2000);
 	},3000);
+	sortPlayerBindings(player);
 	recalculateStats(player);
 }
 
@@ -875,6 +895,10 @@ function hasBuff(player, name) {
 	return false;
 }
 
+function enemyHasBuff(enemy, buff_name) {
+	return (buff_name in enemies[enemy]['buffs']);
+}
+
 function removeBuff(player, name) {
 	if (name in players[player]['buffs']) {
 		delete players[player]['buffs'][name];
@@ -897,7 +921,7 @@ function addObject(player, item, name, type) {
 	objects.push(item);
 	// Display
 	var id = objects.indexOf(item);
-	
+
 	if (type == 'attack') {
 		if (id === 0) {
 			jQuery("#attacks").append("\n<li id=\"object-" + escAttr(item) + "\" onclick=\"javascript:attackPicked('" + escJs(item) + "');\">" + escHtml(name) + escHtml(statString(player, item, type)) + "</li>");
@@ -925,7 +949,7 @@ function addObject(player, item, name, type) {
 			jQuery("#object-" + escAttr(objects[id-1])).after("\n<li id=\"object-" + escAttr(item) + "\" onclick=\"javascript:targetPicked('" + escJs(item) + "');\">" + escHtml(name) + escHtml(statString(player, item, type)) + "</li>");
 		}
 	}
-	
+
 }
 
 function removeObject(item) {
@@ -955,7 +979,7 @@ function expireBuffs(buffs) {
 			if (buffs[_buff]['duration'] === 0) {
 				if (turnorder[currentturn]['type'] == 'player')
 					removeBuff(turnorder[currentturn]['name'], _buff);
-				else 
+				else
 					removeEnemyBuff(turnorder[currentturn]['name'], _buff);
 			}
 		}
@@ -990,12 +1014,12 @@ function nextTurn() {
 			recalculateStats(turnorder[currentturn]['name']);
 			_span = jQuery("#status-title-" + turnorder[currentturn]['name']);
 			_span.removeClass('title-highlight');
-			_span.addClass('title');				
+			_span.addClass('title');
 			_span = jQuery("#bindings-title-" + turnorder[currentturn]['name']);
 			_span.removeClass('title-highlight');
-			_span.addClass('title');				
+			_span.addClass('title');
 		} else {
-			expireBuffs(enemies[turnorder[currentturn]['name']]['buffs']);	
+			expireBuffs(enemies[turnorder[currentturn]['name']]['buffs']);
 		}
 	}
 	currentturn++;
@@ -1006,7 +1030,7 @@ function nextTurn() {
 		div.scrollTop(div.prop('scrollHeight'));
 		backlog2 = backlog;
 		backlog = "";
-	}	
+	}
 	drawOrder();
 	if (turnorder[currentturn]['type'] == 'player') {
 		if (players[turnorder[currentturn]['name']]['stats']['incapacitated'] > 0 || players[turnorder[currentturn]['name']]['stats']['helpless'] > 0) {
@@ -1020,7 +1044,7 @@ function nextTurn() {
 			setTimeout(function(){
 				clearActions();
 				setState(current_fight['next']);
-			},3000);			
+			},3000);
 			return;
 		}
 		sendEvent("<span style=\"color:lightgreen\">------" + players[turnorder[currentturn]['name']]['name'] + "'s Turn------</span><br>");
@@ -1028,7 +1052,7 @@ function nextTurn() {
 		showActions(turnorder[currentturn]['name']);
 		_span = jQuery("#status-title-" + turnorder[currentturn]['name']);
 		_span.removeClass('title');
-		_span.addClass('title-highlight');				
+		_span.addClass('title-highlight');
 		_span = jQuery("#bindings-title-" + turnorder[currentturn]['name']);
 		_span.removeClass('title');
 		_span.addClass('title-highlight');
@@ -1062,7 +1086,7 @@ function escapeAttempt(item) {
 		players[current_player]['buffs']['free-escape']['name']='Free Escape <span style="color:red">x' + players[current_player]['buffs']['free-escape']['number'] + '</span>';
 	}
 
-		
+
 	if (!victory && 'escapecheckcustom' in bindings[_item])
 		_processed = bindings[_item].escapecheckcustom(_player,_item);
 	if (_processed) {
@@ -1084,7 +1108,7 @@ function escapeAttempt(item) {
 		tier = 'hard';
 	else if (players[_player]['bindings'][_item]['level'] <= 7)
 		tier = 'extreme';
-	else 
+	else
 		tier = 'impossible';
 	var _table = escape_table[tier];
 	var _modifier = 0;
@@ -1097,14 +1121,14 @@ function escapeAttempt(item) {
 	} else {
 		sendEvent(players[current_player]['name'] + " is attempting escape their " + bindings[_item]['location'] + " binding...", false);
 	}
-	
+
 	if (players[_player]['bindings'][_item]['autoescape'] === true) {
 		sendEvent("and succeeds!<br>", true);
 		removeItem(_player,_item);
 		nextTurn();
 		return true;
 	}
-	
+
 	var _roll = diceRoll({'d20':1,'base':_modifier}, "Escape Roll [" + bindings[_item]['location'] + "]");
 	if (_roll > 20)
 		_roll = 20;
@@ -1143,7 +1167,7 @@ function attackAttempt(player) {
 	target_picked = [];
 	updateNotification();
 	var handled = false;
-	var attack;	
+	var attack;
 	var i;
 	if (targets_picked[0] in extraactions) {
 		attack = extraactions[targets_picked[0]];
@@ -1198,7 +1222,16 @@ function attackAttempt(player) {
 			}
 		}
 		sendEvent(players[player]['name'] + " uses " + attack['name'] + "!<br>");
-		if ('custom' in attack) {
+		// [RM] 'reactcustom' handler for enemies to react to player attacks before they happen
+		// for reactions after the attack, 'damagecustom' exists
+		for (const enemy in enemies) {
+			const etype = enemytypes[enemies[enemy]['type']];
+			if ('reactcustom' in etype) {
+				handled = etype['reactcustom'](player, attack, enemy, targets_picked);
+			}
+			if (handled) break; // exit loop early if attack is cancelled
+		}
+		if (!handled && 'custom' in attack) {
 			handled = attack.custom(player);
 		}
 		if (!handled) {
@@ -1225,7 +1258,7 @@ function attackAttempt(player) {
 					damageEnemy(targets_picked[i], _damage);
 				} else {
 					sendEvent("but misses!<br>", true);
-				}	
+				}
 			}
 		}
 	} else if (attack['target'] == 'ally') {
@@ -1332,7 +1365,7 @@ function damageEnemy(enemy, damage) {
 				sendEvent("------------------------------------------------------------------------------------<br>", true);
 				victory = true;
 				if ('reward' in current_fight)
-					for (var _player in players) 
+					for (var _player in players)
 						for (var _binding in players[_player]['bindings'])
 							adjustItem(_player,_binding,-1 * current_fight['reward']);
 			}
@@ -1395,7 +1428,7 @@ function enemyAttack(enemy, target, attack) {
 					sendEvent("and <span style=\"color:red\">CRITs</span>, applying " + _damage + " levels of " + bindings[_type]['location'] + " bondage!<br>", true);
 				else
 					sendEvent("and hits, applying <span style=\"color:red\">" + _damage + "</span> levels of " + bindings[_type]['location'] + " bondage!<br>", true);
-				
+
 				if (players[target]['stats']['ribbon'] > 3 && _damage > 1) {
 					players[target]['stats']['ribbon'] -= 3;
 					sendEvent("<span style=\"color:pink\">Your ribbon power reduces the power of the enemy attack, lowering it by one level!</span><br>");
@@ -1404,7 +1437,7 @@ function enemyAttack(enemy, target, attack) {
 				adjustItem(target, _type, _damage);
 			} else {
 				sendEvent("but misses!<br>", true);
-			}	
+			}
 		} else {
 			for (_player in players) {
 				sendEvent(attack['name'] + " attacks " + players[_player]['name'] + "...");
@@ -1436,11 +1469,11 @@ function enemyAttack(enemy, target, attack) {
 					adjustItem(_player, _type, _damage);
 				} else {
 					sendEvent("but misses!<br>", true);
-				}	
+				}
 			}
 		}
 	}
-}	
+}
 
 function attackPicked(target_code) {
 	if (action_state == PICK_TARGET && action_picked['code'] != 'attack') {
@@ -1505,7 +1538,7 @@ function decisionPicked(index) {
 	action_picked = ACTION_DECISION;
 	target_picked = index;
 	var key = current_state_index + "+" + index;
-	if (!(key in flags)) 
+	if (!(key in flags))
 		flags[key]= false;
 	proceedResult(current_state['decisions'][index]['result']);
 	// Reset action command completely (no state on map action)
@@ -1517,9 +1550,9 @@ function decisionPicked(index) {
 
 /** Clicked on a target */
 function targetPicked(target_code) {
-	if (action_state == PICK_TARGET) {	
+	if (action_state == PICK_TARGET) {
 		// Add the selected target to action
-		
+
 
 		targets_picked.push(target_code);
 		// Look for an available action (even for incomplete action)
@@ -1531,7 +1564,7 @@ function targetPicked(target_code) {
 			else {
 				if (target_code in enemies)
 					jQuery("#enemy-" + target_code).addClass('targetted');
-					
+
 				updateNotification();
 			}
 			return;
@@ -1712,13 +1745,13 @@ function processConditions(player, conditions, type) {
 			}
 		}
 	}
-	
+
 	if ('check' in conditions) {
 		for (var variable in conditions['check']) {
 			if (!(variable in flags)) {
 				flags[variable] = false;
 			}
-			
+
 			if (flags[variable] == conditions['check'][variable]) {
 				if (type == 'or') {
 					return true;
@@ -1765,7 +1798,7 @@ function processConditions(player, conditions, type) {
 	} else {
 		return true;
 	}
-}	
+}
 
 /** Proceed an action result. If null show default impossible action. */
 function proceedAction(action) {
@@ -1875,7 +1908,7 @@ function proceedResult(result) {
 	if ('escape' in result) {
 		escapeAttempt(targets_picked[0]);
 		progressed = true;
-	}	
+	}
 	if ('set' in result) {
 		for (var variable in result['set']) {
 			flags[variable] = result['set'][variable];
@@ -1886,8 +1919,8 @@ function proceedResult(result) {
 		for (var variable in result['add']) {
 			if (variable in flags)
 				flags[variable] += result['add'][variable];
-			else 
-				flags[variable] = result['add'][variable];				
+			else
+				flags[variable] = result['add'][variable];
 		}
 		progressed = true;
 	}
@@ -1909,7 +1942,7 @@ function proceedResult(result) {
 	if ('move_to' in result) {
 		if (result['move_to'] in states) {
 			setState(result['move_to']);
-		}		
+		}
 		progressed = true;
 	}
 	if ('random_move' in result) {
@@ -1970,7 +2003,7 @@ function startFight(state) {
 		current_fight.start();
 		rollInit();
 		currentturn = -1;
-		
+
 		sendEvent("------------------------------------------------------------------------------------<br>", true);
 		sendEvent("--------------------" + current_fight['name'] + " has started!--------------------<br>", true);
 		sendEvent("------------------------------------------------------------------------------------<br>", true);
@@ -1993,14 +2026,14 @@ function setStatePicture(state) {
 
 function setStory(state) {
 	showResult(state['story'], "Story: " + state['title']);
-	
+
 }
 
 function setMap(state) {
 	jQuery("#map img").attr("src", "./games/" + escUrl(game) + "/" + escUrl(state['map']));
 	jQuery("#map map").html("");
 	jQuery("#caption").html("");
-	if ('title' in state) 
+	if ('title' in state)
 		jQuery("#caption").append(escHtml(translate(state['title'])));
 	var html = "";
 	for (var i = 0; i < state['map-items'].length; i++) {
@@ -2041,7 +2074,7 @@ function setDecisions(state) {
 						jQuery("#decisions ul").append("<li onclick=\"javascript:decisionPicked('" + i + "');\">" + "<span style=\"color: silver\">" + translate(state['decisions'][i]['decision']) + "</span></li>");
 					} else {
 						jQuery("#decisions ul").append("<li onclick=\"javascript:decisionPicked('" + i + "');\">" + translate(state['decisions'][i]['decision']) + "</li>");
-					}					
+					}
 				} else {
 					jQuery("#decisions ul").append("<li onclick=\"javascript:decisionPicked('" + i + "');\">" + escHtml(translate(state['decisions'][i]['decision'])) + "</li>");
 				}
@@ -2063,7 +2096,7 @@ function showActions(player) {
 	objects = [];
 	jQuery("#attacks").html("");
 	var _class = classes[players[player]['class']];
-	
+
 	if (!hasBuff(player, 'free-escape')) {
 		for (i = 0; i < _class['categories'].length; i++) {
 			var _title = false;
@@ -2079,7 +2112,7 @@ function showActions(player) {
 						}
 					}
 				}
-			}	
+			}
 		}
 		_title = false;
 		for (_attack in extraactions) {
@@ -2092,7 +2125,7 @@ function showActions(player) {
 			}
 		}
 	}
-	
+
 	_title = false;
 	if (Object.keys(players[player]['buffs']).length > 0) {
 		for (_buff in players[player]['buffs']) {
@@ -2103,7 +2136,7 @@ function showActions(player) {
 				}
 				addObject(player, _buff, players[player]['buffs'][_buff]['name'], 'buff');
 			}
-		}	
+		}
 	}
 }
 
@@ -2129,7 +2162,7 @@ function recalculateEnvironment() {
 				_src = "./games/" + escUrl(game) + "/" + escUrl(gamestats[_stat]['bar_negative']);
 			}
 			jQuery("#environment ul").append("<li id=\"env-" + escAttr(_stat) + "\"><span class=\"statname\">" + escHtml(gamestats[_stat]['name']) + "</span><span class=\"stat\"></span>");
-				
+
 			jQuery("#env-" + escAttr(_stat) + " span.stat").html("<div style=\"z-index:1;  position: absolute; top: 0; left: 0; height:18px; width:" + Math.min(101,Math.abs(gamestats[_stat]['value'])*gamestats[_stat]['width']+1) + "px; background:url('" + _src + "') 0 0;\"></div>");
 		}
 	}
@@ -2158,7 +2191,7 @@ function recalculateStats(player) {
 				level = 'hard';
 			else if (players[player]['bindings'][_item]['level'] <= 7)
 				level = 'extreme';
-			else 
+			else
 				level = 'impossible';
 			if (level in bindings[_item]) {
 				for (_stat in stats) {
@@ -2175,7 +2208,7 @@ function recalculateStats(player) {
 		}
 	}
 	for (_stat in stats) {
-		if ('effects' in stats[_stat]) {	
+		if ('effects' in stats[_stat]) {
 			if (stats[_stat]['effects'].length > players[player]['stats'][_stat]) {
 				var effects = stats[_stat]['effects'][players[player]['stats'][_stat]];
 				for (_effect in effects) {
@@ -2210,7 +2243,7 @@ function recalculateStats(player) {
 			}
 		}
 	}
-		
+
 	for (_stat in stats) {
 		if (players[player]['stats'][_stat] !== 0 && stats[_stat]['hidden'] !== true) {
 			var _src;
@@ -2232,12 +2265,12 @@ function recalculateStats(player) {
 			jQuery("#stats-" + escAttr(player + "-" + _stat)).hide();
 		}
 	}
-}	
+}
 
 function _glowing(player,_stat) {
 	var tempspan = jQuery("#stats-" + escAttr(player + "-" + _stat) + " span.statname.glowing");
 	tempspan.removeClass('glowing');
-	tempspan.addClass('notglowing');				
+	tempspan.addClass('notglowing');
 	setTimeout(function(){
 		var tempspan = jQuery("#stats-" + escAttr(player + "-" + _stat) + " span.statname.notglowing");
 		tempspan.removeClass('notglowing');
@@ -2263,7 +2296,7 @@ function recalculateEnemy(enemy) {
 			}
 		}
 	}
-}	
+}
 
 function examine(item) {
 	if (item in players)
@@ -2352,7 +2385,7 @@ function examineClass(_class) {
 			if (_class['attacks'][_attack]['category'] == _class['categories'][i] && 'description' in _class['attacks'][_attack]) {
 				if (_first)
 					_first = false;
-				else 
+				else
 					_line += "<br>";
 				if (_class['attacks'][_attack]['type'] == 'spell')
 					_line += "<span style=\"font-weight: bold; color: skyblue;\">" + _class['attacks'][_attack]['name'] + ": </span>" + _class['attacks'][_attack]['description'];
@@ -2377,7 +2410,7 @@ function swapMovement(player) {
 		showTextResult("You are stunned and cannot change your movement state!");
 		return;
 	}
-	if (players[player]['move'] == 'moving') { 
+	if (players[player]['move'] == 'moving') {
 		setStanding(player);
 	} else {
 		setMoving(player);
@@ -2394,7 +2427,7 @@ function setMoving(player) {
 	}
 }
 
-function setStanding(player) {	
+function setStanding(player) {
 	players[player]['move'] = 'standing';
 	addBuff(player, 'standing', {'name':'Standing Still','defense':-2});
 }
@@ -2404,9 +2437,9 @@ function drawPlayer(player, current) {
 		return;
 	var span = jQuery("#order ul");
 	var movement = "";
-	if (players[player]['move'] == 'moving') 
+	if (players[player]['move'] == 'moving')
 		movement = "Moving";
-	else if (players[player]['move'] == 'standing') 
+	else if (players[player]['move'] == 'standing')
 		movement = "Standing";
 	if (current)
 		span.append("\n<li class=\"current\" id=\"player-" + escAttr(player) + "\" onclick=\"javascript:targetPicked('" + escJs(player) + "');\"><span style=\"color:lightgreen\">" + escHtml(players[player]['name'] + "</span> the <span style=\"color:" + classes[players[player]['class']]['color'] + "\">" + classes[players[player]['class']]['name'] + "</span> (" + movement + ")") + "</li>");
@@ -2417,7 +2450,7 @@ function drawPlayer(player, current) {
 			span.append("\n<div class='enebuff'>" + escHtml(players[player]['buffs'][_buff]['name']) + escHtml(statString(player, _buff, 'buff')) + "</div>");
 		}
 	}
-	
+
 }
 
 function drawEnemy(enemy, current) {
@@ -2427,7 +2460,7 @@ function drawEnemy(enemy, current) {
 	if (current)
 		jQuery("#order ul").append("\n<li class=\"current\" id=\"enemy-" + escAttr(enemy) + "\" onclick=\"javascript:targetPicked('" + escJs(enemy) + "');\"></li>");
 	else
-		jQuery("#order ul").append("\n<li id=\"enemy-" + escAttr(enemy) + "\" onclick=\"javascript:targetPicked('" + escJs(enemy) + "');\"></li>");	
+		jQuery("#order ul").append("\n<li id=\"enemy-" + escAttr(enemy) + "\" onclick=\"javascript:targetPicked('" + escJs(enemy) + "');\"></li>");
 	var span = jQuery("#order ul li#enemy-" + escAttr(enemy));
 	span.append("<div><span style=\"color:lightcoral\">" + escHtml(enemies[enemy]['name']) + "</span><span style=\"font-weight: bold;\"> HP: </span></div>");
 	span.append("<div class='bar'>&nbsp;</div>");
@@ -2444,7 +2477,7 @@ function drawEnemy(enemy, current) {
 	barspan.append("<div style=\"z-index:0; position: absolute; top: 0; left: 0; height:18px; width:101px; background:url('" + _src + "') 0 0;\"></div>");
 	span.append("<div><span style=\"font-weight: bold;\"> Def: </span></div>");
 	_src = "./core/images/defense.png";
-	
+
 	span.append("<div style=\"height:18px; width:" + Math.min(101,Math.abs(enemies[enemy]['stats']['defense'])*5+1) + "px; background:url('" + _src + "') 0 0;\"></div>");
 	for (_buff in enemies[enemy]['buffs']) {
 		if (enemies[enemy]['buffs'][_buff]['hidden'] !== true) {
@@ -2472,7 +2505,7 @@ function drawOrder() {
 
 	}
 }
-	
+
 // Initializing functions
 /////////////////////////
 
@@ -2489,7 +2522,7 @@ function setupUI() {
 	if (localStorage.length === 0) {
 		jQuery("#load-button").hide();
 	}
-	
+
 	// Set game title
 	if (isDefined('title')) {
 		jQuery("title").html(escHtml(translate(title)));
@@ -2556,9 +2589,9 @@ function loadGame() {
 	// Add scripts and style
 
 	jQuery.getScript("./games/" + escUrl(game) + "/game.js")
-		.done(function() { 
+		.done(function() {
 			jQuery.getScript("./games/" + escUrl(game) + "/language.js")
-				.done(function() {	
+				.done(function() {
 					continueLoad();
 				})
 				.fail(function() {
@@ -2571,7 +2604,7 @@ function loadGame() {
 			jQuery("head").append("<script type=\"text/javascript\" src=\"./games/" + escUrl(game) + "/game.js\"></script>");
 			failLoad();
 		});
-		
+
 }
 
 function loadI18n() {
@@ -2610,7 +2643,7 @@ function addEnemy(_type) {
 	enemy['name'] = enemytypes[_type]['name'];
 	enemy['type'] = _type;
 	enemy['hp'] = enemytypes[_type]['hp'];
-	enemy['defense'] = enemytypes[_type]['defense'];	
+	enemy['defense'] = enemytypes[_type]['defense'];
 	enemy['stats'] = {};
 	enemy['buffs'] = {};
 	var _key = 'enemy'+ nextenemy;
@@ -2712,7 +2745,7 @@ function game_end(end_index) {
 	for (var i = 0; i < lines.length; i++) {
 		jQuery("#game-end-situation").append("<p>" + escHtml(translate(lines[i])) + "</p>");
 	}
-	jQuery("#game-end-screen").show();	
+	jQuery("#game-end-screen").show();
 }
 
 jQuery().ready(function() {
