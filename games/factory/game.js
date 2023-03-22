@@ -195,7 +195,8 @@ var states = {
 			{'decision': 'Hop the Fence (INCOMPLETE)', 'result': {'move_to': 'fence1'}},
 			{'decision': 'Disguise Yourselves (INCOMPLETE)', 'result': {'move_to': 'disguise1'}},
 			{'decision': 'Latex Sewers (INCOMPLETE)', 'result': {'move_to': 'sewers1'}}
-		]
+		],
+		'actions': []
 	},
 	'force1': {
 		'title': 'Factory Front Gate',
@@ -203,7 +204,8 @@ var states = {
 		'map-items': [],
 		'fight': 'force_fight',
 		'story': ["As expected, you are immediately met with resistance at the front gates, and the alarm starts blaring as well! Better get this fight wrapped up quickly before backup arrives"],
-		'decisions': []
+		'decisions': [],
+		'actions': []
 	}
 };
 
