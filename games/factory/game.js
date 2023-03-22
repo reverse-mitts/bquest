@@ -396,7 +396,7 @@ function latex_orb_explosion(enemy, target) {
 	}
 
 	if (crit) {
-		sendEnemy('<span style="color: red;">CRIT! The latex orb is able to fully reassemble from the gooey blast!</span><br>', true);
+		sendEvent('<span style="color: red;">CRIT! The latex orb is able to fully reassemble from the gooey blast!</span><br>', true);
 		// heal enemy to 5
 		damageEnemy(enemy, enemy_hp - 5);
 	}
