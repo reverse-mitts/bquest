@@ -857,6 +857,18 @@ function adjustItem(player, item, levels) {
 
 }
 
+// [RM] sets a binding to an arbitrary level
+function setLevel(player, item, level) {
+	adjustItem(player, item, level - getItemLevel(player, item));
+}
+
+// [RM] "heals" a binding (add levels, but only up to the "maximum" level the binding has been before struggles)
+function healLevels(player, item, amount) {
+	if (amount <= 0 || !(item in players[player]['bindings'])) return;
+	const damage = players[player]['bindings'][item]['maxlevel'] - players[player]['bindings'][item]['level'];
+	adjustItem(player, item, Math.min(amount, damage));
+}
+
 function totalItems(player) {
 	var _total = 0;
 	for (var _binding in players[player]['bindings'])
