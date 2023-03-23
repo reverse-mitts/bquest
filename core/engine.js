@@ -863,10 +863,13 @@ function setLevel(player, item, level) {
 }
 
 // [RM] "heals" a binding (add levels, but only up to the "maximum" level the binding has been before struggles)
+// Returns the levels healed
 function healLevels(player, item, amount) {
-	if (amount <= 0 || !(item in players[player]['bindings'])) return;
+	if (amount <= 0 || !(item in players[player]['bindings'])) return 0;
 	const damage = players[player]['bindings'][item]['maxlevel'] - players[player]['bindings'][item]['level'];
-	adjustItem(player, item, Math.min(amount, damage));
+	const healed = Math.min(amount, damage);
+	adjustItem(player, item, healed);
+	return healed;
 }
 
 function totalItems(player) {
