@@ -123,10 +123,10 @@ var enemytypes = {
 						"Similarly, if a physical attack leaves a latex orb with just 1 or 2 HP, it will respond by exploding <b>immediately</b>, targeting the attacker.<br><br>",
 		'hp': 5,
 		'defense': 10,
-		'setupcustom': latex_orb_setup,
-		'damagecustom': latex_orb_damage,
-		'reactcustom': latex_orb_react,
-		'ai': latex_orb_ai,
+		'setupcustom': orb_setup,
+		'damagecustom': orb_damage,
+		'reactcustom': orb_react,
+		'ai': orb_ai,
 		'attacks': {
 			'latexspray': {
 				'name': 'Latex Spray',
@@ -139,13 +139,55 @@ var enemytypes = {
 				'name': 'Latex Explosion',
 				'description': "The orb explodes, sacrificing itself in an attempt to cover a single melee target in latex!<br>The latex is distributed fairly evenly, making this attack quite dangerous if the target already has some latex bondage!",
 				'targets': 'single',
-				'custom': latex_orb_explosion
+				'custom': orb_explosion
 			},
 			'spellward': {
 				'name': 'Spell Ward',
 				'description': "Creates an anti-magic ward. The next time the orb attempts to interrupt a hostile spell with Sound-Seeker, it will roll at +3 instead of -3.",
 				'targets': 'self',
-				'custom': latex_orb_spellward
+				'custom': orb_spellward
+			}
+		}
+	},
+	'latexchaser': {
+		'name': 'Latex Chaser',
+		'description': "something something passive: relentless",
+		'hp': 12,
+		'defense': 11,
+		'setupcustom': chaser_setup,
+		'damagecustom': chaser_damage,
+		'reactcustom': chaser_react,
+		'ai': chaser_ai,
+		'attacks': {
+			'latexspray': {
+				'name': 'Latex Spray',
+				'description': "Sprays a single ranged target with a coating of latex in any location. Partially-escaped bindings will heal an amount equal to damage dealt before applying new damage!",
+				'targets': 'single',
+				'custom': chaser_spray
+			},
+			'latexpin': {
+				'name': 'Latex Pin',
+				'description': "",
+				'targets': 'single',
+				'custom': chaser_pin
+			},
+			'shadowdodge': {
+				'name': 'Shadow Dodge',
+				'description': "",
+				'targets': 'self',
+				'custom': chaser_shadow
+			},
+			'latexscent': {
+				'name': 'Latex Scent',
+				'description': "",
+				'targets': 'self',
+				'custom': chaser_scent
+			},
+			'prisonerbeacon': {
+				'name': 'Prisoner Pickup Beacon',
+				'description': "",
+				'targets': 'single',
+				'custom': chaser_beacon
 			}
 		}
 	}
@@ -216,15 +258,15 @@ var good_ends = [];
 
 // BEGIN GAME-SPECIFIC FUNCTIONS
 
-function latex_orb_setup(enemy) {
+function orb_setup(enemy) {
 	enemyBuff(enemy, 'expendable', {
 		'name': 'Expendable',
-		'custom': latex_orb_expendable,
+		'custom': orb_expendable,
 		'hidden': true
 	});
 }
 
-function latex_orb_expendable() {
+function orb_expendable() {
 	for (const e in enemies) {
 		if (turnorder[currentturn]['name'] !== e) continue;
 		sendEvent('The latex orb decays, losing 1 HP...<br>', false);
@@ -234,7 +276,7 @@ function latex_orb_expendable() {
 	}
 }
 
-function latex_orb_damage(enemy, damage) {
+function orb_damage(enemy, damage) {
 	if (turnorder[currentturn]['type'] !== 'player') return false;
 	const player_name = turnorder[currentturn]['name'];
 	// this enemy buff keeps track of the last player to damage the orb
@@ -249,23 +291,23 @@ function latex_orb_damage(enemy, damage) {
 			'name': 'Physical Attacker',
 			'duration': 1,
 			'enemy': enemy,
-			'custom': latex_orb_physical_react,
+			'custom': orb_physical_react,
 			'hidden': true
 		});
 	}
 	return false;
 }
 
-function latex_orb_physical_react() {
+function orb_physical_react() {
 	for (const e in enemies) {
 		if (hasBuff(current_player, 'melee' + e) && enemies[e]['hp'] < 3) {
 			sendEvent('<span style="color: red;">The volatile latex orb EXPLODES as a result of the physical attack!</span><br>', true);
-			latex_orb_explosion(e, current_player);
+			orb_explosion(e, current_player);
 		}
 	}
 }
 
-function latex_orb_react(player, attack, enemy, targets_picked) {
+function orb_react(player, attack, enemy, targets_picked) {
 
 	// each attack can only be reacted to by one orb
 	if (hasBuff(player, 'soundseekerCD')) return false;
@@ -300,7 +342,7 @@ function latex_orb_react(player, attack, enemy, targets_picked) {
 	return true;
 }
 
-function latex_orb_ai(enemy) {
+function orb_ai(enemy) {
 	const attacks = enemytypes["latexorb"]["attacks"];
 	// select target
 	var target;
@@ -332,7 +374,7 @@ function latex_orb_ai(enemy) {
 	enemyAttack(enemy, target, attack);
 }
 
-function latex_orb_explosion(enemy, target) {
+function orb_explosion(enemy, target) {
 
 	const target_name = players[target]['name'];
 	const target_stats = players[target]['stats'];
@@ -408,8 +450,102 @@ function latex_orb_explosion(enemy, target) {
 	return true;
 }
 
-function latex_orb_spellward(enemy, target) {
+function orb_spellward(enemy, target) {
 	sendEvent('The latex orb creates an anti-magic ward, greatly improving its next attempt to interupt a spell!<br>', true);
 	enemyBuff(enemy, 'spellward', {'name': '<span style="color: red;">Spell Ward</span>'});
 	return true;
+}
+
+function chaser_setup(enemy) {
+
+}
+
+function chaser_damage(enemy, damage) {
+
+}
+
+function chaser_react(player, attack, enemy, targets_picked) {
+
+}
+
+function chaser_ai(enemy) {
+
+}
+
+function chaser_spray(enemy, target) {
+
+	const enemy_name = enemies[enemy]['name'];
+	const enemy_stats = enemies[enemy]['stats'];
+	const target_name = players[target]['name'];
+	const target_stats = players[target]['stats'];
+
+	sendEvent(enemy_name + ' sprays latex at ' + target_name + '... ');
+	const hit_roll = diceRoll({'base': enemy_stats['hit'], 'd20': 1}, 'Latex Spray [Hit]');
+	const crit = critical;
+	if (hit_roll < target_stats['defense']) {
+		sendEvent('but misses!<br>', true);
+		return true;
+	}
+
+	const effect_roll = diceRoll({'base': enemy_stats['effect'] + target_stats['enemyeffect'], 'd20': 1}, 'Latex Spray [Effect]');
+
+	var effect = 0;
+	if (effect_roll <= 11) effect = 1;
+	else if (effect_roll <= 17) effect = 2;
+	else effect = 3;
+
+	if (crit) effect += 1;
+
+	const location_list = ['latexhead', 'latexarms', 'latextorso', 'latexlegs'];
+	const location = location_list[Math.floor(location_list.length * Math.random())];
+	const location_name = bindings[location]['location'];
+	const crit_string = crit ? '<span style="color:red">CRITs</span>' : 'hits';
+
+	const healed = healLevels(target, location, effect);
+	adjustItem(player, location, effect);
+
+	if (healed > 0) {
+		sendEvent('and ' + crit_string + ', healing ' + healed + ' existing levels and applying ' + effect + ' new levels of ' + location_name + ' bondage!<br>', true);
+	}
+	else {
+		sendEvent('and ' + crit_string + ', applying ' + effect + ' levels of ' + location_name + ' bondage!<br>', true);
+	}
+
+	return true;
+}
+
+function chaser_pin(enemy, target) {
+
+	const enemy_name = enemies[enemy]['name'];
+	const enemy_stats = enemies[enemy]['stats'];
+	const target_name = players[target]['name'];
+	const target_stats = players[target]['stats'];
+
+	sendEvent(enemy_name + ' lurches at ' + target_name + '... ');
+	const hit_roll = diceRoll({'base': enemy_stats['hit'], 'd20': 1}, 'Latex Pin [Hit]');
+	if (hit_roll < target_stats['defense']) {
+		sendEvent('but misses!<br>', true);
+		return true;
+	}
+
+	if (critical) {
+		sendEvent('and pins her to the ground!<br>', true);
+	}
+	else {
+
+	}
+
+	return true;
+}
+
+function chaser_shadow(enemy, target) {
+
+}
+
+function chaser_scent(enemy, target) {
+
+}
+
+function chaser_beacon(enemy, target) {
+
 }
