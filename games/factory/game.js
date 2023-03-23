@@ -401,22 +401,22 @@ function orb_explosion(enemy, target) {
 	if (effect_roll <= 8) {
 		binding_list = ['latexarms', 'latextorso', 'latexlegs'];
 		effect_levels = 6;
-		message = target_name + ' hits the deck, keeping her head covered, but still gaining <span style="color: red;">6</span> total bondage levels!<br>', true;
+		message = target_name + ' hits the deck, keeping her head covered, but still gaining <span style="color:red">6</span> total bondage levels!<br>', true;
 	}
 	else if (effect_roll <= 15) {
 		binding_list = ['latexhead', 'latexarms', 'latextorso', 'latexlegs'];
 		effect_levels = 8;
-		message = target_name + ' is caught in the blast, gaining <span style="color: red;">8</span> total bondage levels!<br>', true;
+		message = target_name + ' is caught in the blast, gaining <span style="color:red">8</span> total bondage levels!<br>', true;
 	}
 	else if (effect_roll <= 19) {
 		binding_list = ['latexhead', 'latexarms', 'latextorso', 'latexlegs'];
 		effect_levels = 10;
-		message = target_name + ' suffers a direct hit, gaining <span style="color: red;">10</span> total bondage levels!<br>', true;
+		message = target_name + ' suffers a direct hit, gaining <span style="color:red">10</span> total bondage levels!<br>', true;
 	}
 	else {
 		binding_list = ['latexhead', 'latexarms', 'latextorso', 'latexlegs'];
 		effect_levels = 12;
-		message = target_name + ' suffers a direct hit, and catches most of the splash coming back down, gaining <span style="color: red;">12</span> total bondage levels in a nice, even coat!<br>', true;
+		message = target_name + ' suffers a direct hit, and catches most of the splash coming back down, gaining <span style="color:red">12</span> total bondage levels in a nice, even coat!<br>', true;
 	}
 
 	sendEvent(message, true);
@@ -457,7 +457,25 @@ function orb_spellward(enemy, target) {
 }
 
 function chaser_setup(enemy) {
+	enemyBuff(enemy, 'relentless', {
+		'name': 'Relentless',
+		'custom': chaser_relentless,
+		'hidden': true
+	});
+}
 
+function chaser_relentless() {
+	for (const e in enemies) {
+		if (turnorder[currentturn]['name'] !== e) continue;
+		if (enemyHasBuff(e, 'relentlessCD')) return;
+		const roll = diceRoll({'d6': 1}, 'Latex Chaser [Relentless]');
+		if (roll == 6) {
+			sendEvent("The Latex Chaser is relentless, taking two consecutive turns!", true);
+			enemyBuff(e, 'relentlessCD', {'name': 'Relentless Cooldown', 'duration': 1, 'hidden': true});
+			currentturn--; // the very next instruction after returning is 'currentturn++;' so this should be adequate for the effect
+		}
+		return;
+	}
 }
 
 function chaser_damage(enemy, damage) {
@@ -521,6 +539,8 @@ function chaser_pin(enemy, target) {
 	const target_name = players[target]['name'];
 	const target_stats = players[target]['stats'];
 
+	enemyBuff(enemy, 'pinCD', {'name': 'Latex Pin Cooldown', 'duration': 3, 'hidden': true});
+
 	sendEvent(enemy_name + ' lurches at ' + target_name + '... ');
 	const hit_roll = diceRoll({'base': enemy_stats['hit'], 'd20': 1}, 'Latex Pin [Hit]');
 	if (hit_roll < target_stats['defense']) {
@@ -529,11 +549,16 @@ function chaser_pin(enemy, target) {
 	}
 
 	if (critical) {
-		sendEvent('and pins her to the ground!<br>', true);
+		sendEvent('and pins her to the ground! <span style="color:red">The chaser lands ready to take another action!</span><br>', true);
 	}
 	else {
-
+		sendEvent('and pins her to the ground!<br>', true);
 	}
+
+	addBuff(target, 'pinned', {'name': '<span style="color:red">Pinned!</span>', 'immobilized': 1});
+	enemyBuff(enemy, 'pinning', {'name': 'Pinning', 'hit': 2, 'effect': 2})
+
+	if (critical) chaser_breath(enemy, target);
 
 	return true;
 }
