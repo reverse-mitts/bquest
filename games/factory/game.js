@@ -598,7 +598,9 @@ function chaser_shadow(enemy, target) {
 }
 
 function chaser_scent(enemy, target) {
-
+	sendEvent('<span style="color:orange">Latex Chaser uses Latex Scent on ' + players[target]['name'] + '! It will be easier for the chaser to her hit for as long as her latex bondage persists!</span><br>', true);
+	addBuff(target, enemy + 'scent', {'name': 'Scented by ' + enemy, 'hidden': true});
+	enemyBuff(enemy, target + 'scent', {'name': target + "'s Scent", 'hidden': true});
 }
 
 function chaser_beacon(enemy, target) {
