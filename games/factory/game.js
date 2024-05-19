@@ -194,6 +194,14 @@ var enemytypes = {
 };
 
 var extraactions = {
+	'pin_contest': {
+		'name': 'Contest Pin',
+		'type': 'extra',
+		'targets': 0,
+		'target': 'enemy',
+		'condition': {'has_buff': 'pinned'},
+		'custom': contest_chaser_pin
+	}
 };
 
 var intro = [{
@@ -257,6 +265,28 @@ var bad_ends = {
 var good_ends = [];
 
 // BEGIN GAME-SPECIFIC FUNCTIONS
+
+function contest_chaser_pin(player) {
+	// msg
+	var enemy = players[player]['buffs']['pinned']['enemy'];
+	const player_roll = diceRoll({'base': players[player]['stats']['roll'], 'd20': 1}, 'Contested Roll [' + players[player]['name'] + ']');
+	const player_crit = critical;
+	const enemy_roll = diceRoll({'base': enemies[enemy]['stats']['roll'], 'd20': 1}, 'Contested Roll [' + enemies[enemy]['name'] + ']');
+	const enemy_crit = critical;
+	if (player_roll >= enemy_roll) {
+		// msg
+		removeBuff(player, 'pinned');
+		removeEnemyBuff(enemy, 'pinning');
+		enemyBuff(enemy, 'pinCD', {'name': 'Latex Pin Cooldown', 'duration': 2, 'hidden': true});
+		setMoving(player);
+		drawOrder();
+		showActions(player);
+		return true;
+	}
+	// msg
+	nextTurn();
+	return true;
+}
 
 function orb_setup(enemy) {
 	enemyBuff(enemy, 'expendable', {
@@ -539,7 +569,7 @@ function chaser_pin(enemy, target) {
 	const target_name = players[target]['name'];
 	const target_stats = players[target]['stats'];
 
-	enemyBuff(enemy, 'pinCD', {'name': 'Latex Pin Cooldown', 'duration': 3, 'hidden': true});
+	enemyBuff(enemy, 'pinCD', {'name': 'Latex Pin Cooldown', 'duration': 2, 'hidden': true});
 
 	sendEvent(enemy_name + ' lurches at ' + target_name + '... ');
 	const hit_roll = diceRoll({'base': enemy_stats['hit'], 'd20': 1}, 'Latex Pin [Hit]');
@@ -555,8 +585,8 @@ function chaser_pin(enemy, target) {
 		sendEvent('and pins her to the ground!<br>', true);
 	}
 
-	addBuff(target, 'pinned', {'name': '<span style="color:red">Pinned!</span>', 'immobilized': 1});
-	enemyBuff(enemy, 'pinning', {'name': 'Pinning', 'hit': 2, 'effect': 2})
+	addBuff(target, 'pinned', {'name': '<span style="color:red">Pinned!</span>', 'enemy': enemy, 'immobilized': 1});
+	enemyBuff(enemy, 'pinning', {'name': 'Pinning', 'target': target, 'hit': 2, 'effect': 2})
 
 	if (critical) chaser_breath(enemy, target);
 
