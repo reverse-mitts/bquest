@@ -130,7 +130,7 @@ var enemytypes = {
 		'attacks': {
 			'latexspray': {
 				'name': 'Latex Spray',
-				'descripion': "Sprays a single ranged target with a thin coating of latex in any location.",
+				'description': "Sprays a single ranged target with a thin coating of latex in any location.",
 				'targets': 'single',
 				'effects': [{'roll': 13, 'damage': 1}, {'roll': 20, 'damage': 2}],
 				'effectstypes': ['latexhead', 'latexarms', 'latextorso', 'latexlegs']
@@ -223,6 +223,7 @@ var fights = {
 			addEnemy('latexorb');
 			addEnemy('latexorb');
 			addEnemy('latexorb');
+            addEnemy('latexchaser');
 		}
 	}
 };
